@@ -1,6 +1,6 @@
   document.addEventListener("DOMContentLoaded", function() {
     // Select the elements
-    const elements = document.querySelectorAll(".navbar, .nav_button, .nav-link, .menu_lottie, .fs_nav, .navbar_static_background");
+    const elements = document.querySelectorAll(".navbar, .nav_button, .nav-link, .menu_lottie, .fs_nav, .navbar_static_background, .nav_logo_embed, .nav_logo_embed_small");
     
     // Track the state so we don't spam the DOM
     let isScrolled = false;
