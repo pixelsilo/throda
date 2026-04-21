@@ -1,0 +1,120 @@
+.video-overlay {
+  align-items: center;
+  background-color: hsla(219.99999999999997, 100%, 7.06%, 0.88);
+  bottom: 0%;
+  display: flex;
+  justify-content: center;
+  left: 0%;
+  opacity: 0;
+  position: fixed;
+  right: 0%;
+  top: 0%;
+  visibility: hidden;
+  z-index: 99999;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.video-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.video-holder {
+  max-width: 70rem;
+  width: 100%;
+  transform: scale(0.9);
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.video-overlay.is-open .video-holder {
+  transform: scale(1);
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.video-embed {
+}
+
+@media screen and (min-width: 1920px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .video-overlay {
+  }
+
+  .video-overlay.is-open {
+  }
+
+  .video-holder {
+  }
+
+  .video-embed {
+  }
+}
