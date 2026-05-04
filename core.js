@@ -93,4 +93,52 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Filter System Functionality
+    const filterButtons = document.querySelectorAll('.filter-label');
+    const accordionItems = document.querySelectorAll('.list7_item');
+
+    if (filterButtons.length && accordionItems.length) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const filterValue = button.classList.contains('all') ? 'all' : 
+                    Array.from(button.classList).find(cls => 
+                        cls !== 'filter-label' && cls !== 'is-selected' && cls !== 'all'
+                    );
+
+                // Remove filter-is-selected from all filter buttons
+                filterButtons.forEach(btn => btn.classList.remove('filter-is-selected'));
+
+                // Add filter-is-selected to clicked button
+                button.classList.add('filter-is-selected');
+
+                // Filter accordion items
+                if (filterValue === 'all') {
+                    // Show all items
+                    accordionItems.forEach(item => {
+                        item.style.display = '';
+                    });
+                } else {
+                    // Show only items matching the filter
+                    accordionItems.forEach(item => {
+                        const itemFilterLabel = item.querySelector(`.filter-label.${filterValue}`);
+                        if (itemFilterLabel) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Set initial state - show all
+        const allButton = document.querySelector('.filter-label.all');
+        if (allButton) {
+            allButton.classList.add('filter-is-selected');
+        }
+    }
 });
