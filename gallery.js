@@ -15,14 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialSrcset = mainImgNode.srcset;
 
     const injectMainThumbnail = () => {
-        const thumbContainer = document.querySelector('.product_image_thumb_holder.w-dyn-items') || document.querySelector('.product_image_thumb_holder');
+        const thumbContainer = document.querySelector('.product_image_thumb_cl.w-dyn-items') || document.querySelector('.product_image_thumb_cl');
         if (!thumbContainer || document.getElementById('injected-main-thumb')) return;
 
-        // Check if it's already there to prevent duplicates
-        const firstThumb = thumbContainer.querySelector('img[image="list"], img[image="thumb"]');
-        if (firstThumb && cleanUrl(firstThumb.src) === cleanUrl(initialSrc)) return;
-
         const existingItem = thumbContainer.querySelector('.w-dyn-item');
+        const firstThumb = thumbContainer.querySelector('img[image="list"], img[image="thumb"]');
+        
         const thumbWrapper = document.createElement('div');
         thumbWrapper.className = existingItem ? existingItem.className : 'w-dyn-item w-dyn-repeater-item';
         thumbWrapper.id = 'injected-main-thumb';
@@ -38,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     injectMainThumbnail();
 
     // Ensure it stays injected even if Shopify's variant script completely rebuilds the thumbnail HTML
-    const thumbContainerNode = document.querySelector('.product_image_thumb_holder.w-dyn-items') || document.querySelector('.product_image_thumb_holder');
+    const thumbContainerNode = document.querySelector('.product_image_thumb_cl.w-dyn-items') || document.querySelector('.product_image_thumb_cl');
     if (thumbContainerNode) {
         new MutationObserver(() => {
             if (!document.getElementById('injected-main-thumb')) injectMainThumbnail();

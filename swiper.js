@@ -5,6 +5,9 @@
     // Cache the root font size once for REM conversions - test 3
     const htmlFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
+    // Track autoplay state across sliders
+    const autoplayStates = new Map();
+
     // Optimized helper function
     const getAttr = (el, attr, fallback, isGapOrOffset = false) => {
       const val = el.getAttribute(attr);
@@ -48,6 +51,10 @@
       const isCentered = sliderSection.getAttribute('slider-centered') === 'true';
       sliderWrapper.style.transitionTimingFunction = sliderSection.getAttribute('slider-easing') || 'ease';
 
+      // Track autoplay for this specific slider
+      const sliderKey = Math.random().toString(36);
+      autoplayStates.set(sliderKey, true);
+
       // Initialize Swiper
       new Swiper(swiperContainer, {
         speed: duration,
@@ -70,6 +77,12 @@
         spaceBetween: gapMob,
         slidesOffsetBefore: isCentered ? 0 : offsetMob, 
         slidesOffsetAfter: isCentered ? 0 : offsetMob,
+
+        // Autoplay Configuration
+        autoplay: {
+          delay: 2000,
+          disableOnInteraction: false,
+        },
 
         navigation: {
           nextEl: btnNext,
@@ -102,5 +115,22 @@
           },
         }
       });
+
+      // Disable autoplay when nav arrows are clicked
+      if (btnPrev) {
+        btnPrev.addEventListener('click', () => {
+          autoplayStates.set(sliderKey, false);
+          const swiperInstance = swiperContainer.swiper;
+          if (swiperInstance) swiperInstance.autoplay.stop();
+        });
+      }
+      
+      if (btnNext) {
+        btnNext.addEventListener('click', () => {
+          autoplayStates.set(sliderKey, false);
+          const swiperInstance = swiperContainer.swiper;
+          if (swiperInstance) swiperInstance.autoplay.stop();
+        });
+      }
     });
   });
