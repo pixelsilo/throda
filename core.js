@@ -104,10 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const filterValue = button.classList.contains('all') ? 'all' : 
-                    Array.from(button.classList).find(cls => 
-                        cls !== 'filter-label' && cls !== 'is-selected' && cls !== 'all'
-                    );
+                // Get filter value from button - either from filter="button" or text content for "All"
+                const filterButtonDiv = button.querySelector('[filter="button"]');
+                const buttonFilterValue = filterButtonDiv 
+                    ? filterButtonDiv.textContent.trim() 
+                    : (button.classList.contains('all') ? 'all' : null);
 
                 // Remove filter-is-selected from all filter buttons
                 filterButtons.forEach(btn => btn.classList.remove('filter-is-selected'));
@@ -116,16 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('filter-is-selected');
 
                 // Filter accordion items
-                if (filterValue === 'all') {
+                if (buttonFilterValue === 'all') {
                     // Show all items
                     accordionItems.forEach(item => {
                         item.style.display = '';
                     });
-                } else {
+                } else if (buttonFilterValue) {
                     // Show only items matching the filter
                     accordionItems.forEach(item => {
-                        const itemFilterLabel = item.querySelector(`.filter-label.${filterValue}`);
-                        if (itemFilterLabel) {
+                        const itemFilterValue = item.querySelector('[filter="value"]')?.textContent.trim();
+                        if (itemFilterValue === buttonFilterValue) {
                             item.style.display = '';
                         } else {
                             item.style.display = 'none';
@@ -136,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Set initial state - show all
-        const allButton = document.querySelector('.filter-label.all');
+        const allButton = Array.from(filterButtons).find(btn => btn.classList.contains('all'));
         if (allButton) {
             allButton.classList.add('filter-is-selected');
         }
