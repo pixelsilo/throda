@@ -99,63 +99,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const accordionItems = document.querySelectorAll('.list7_item');
 
     if (filterButtons.length && accordionItems.length) {
-        // Function to update displayed items based on selected filters
-        const updateFilteredItems = () => {
-            // Get all currently selected filter values (excluding 'all')
-            const selectedButtons = Array.from(filterButtons).filter(btn => 
-                btn.classList.contains('filter-is-selected') && !btn.classList.contains('all')
-            );
-            const selectedFilters = selectedButtons.map(btn => {
-                const filterButtonDiv = btn.querySelector('[filter="button"]');
-                return filterButtonDiv ? filterButtonDiv.textContent.trim() : null;
-            }).filter(f => f !== null);
-
-            // Check if 'all' is selected
-            const allButton = Array.from(filterButtons).find(btn => btn.classList.contains('all'));
-            const isAllSelected = allButton && allButton.classList.contains('filter-is-selected');
-
-            // Show/hide items based on filters
-            accordionItems.forEach(item => {
-                if (isAllSelected || selectedFilters.length === 0) {
-                    // Show all items if 'all' is selected or no filters selected
-                    item.style.display = '';
-                } else {
-                    // Get all filter values from the item (supports multiple filters)
-                    const filterElements = item.querySelectorAll('[filter="value"]');
-                    const itemFilterValues = Array.from(filterElements).map(el => el.textContent.trim());
-                    
-                    // Show item if ANY of its filter values match ANY of the selected filters (OR logic)
-                    const matchesAnyFilter = selectedFilters.some(filter => itemFilterValues.includes(filter));
-                    item.style.display = matchesAnyFilter ? '' : 'none';
-                }
-            });
-        };
-
         filterButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Check if this is the 'all' button
-                if (button.classList.contains('all')) {
-                    // Clicking 'all' deselects all other filters
-                    filterButtons.forEach(btn => {
-                        btn.classList.remove('filter-is-selected');
+                // Get filter value from button - either from filter="button" or text content for "All"
+                const filterButtonDiv = button.querySelector('[filter="button"]');
+                const buttonFilterValue = filterButtonDiv 
+                    ? filterButtonDiv.textContent.trim() 
+                    : (button.classList.contains('all') ? 'all' : null);
+
+                // Remove filter-is-selected from all filter buttons
+                filterButtons.forEach(btn => btn.classList.remove('filter-is-selected'));
+
+                // Add filter-is-selected to clicked button
+                button.classList.add('filter-is-selected');
+
+                // Filter accordion items
+                if (buttonFilterValue === 'all') {
+                    // Show all items
+                    accordionItems.forEach(item => {
+                        item.style.display = '';
                     });
-                    button.classList.add('filter-is-selected');
-                } else {
-                    // Remove 'all' selection if a specific filter is clicked
-                    const allButton = Array.from(filterButtons).find(btn => btn.classList.contains('all'));
-                    if (allButton) {
-                        allButton.classList.remove('filter-is-selected');
-                    }
-
-                    // Toggle the selected class on the clicked button
-                    button.classList.toggle('filter-is-selected');
+                } else if (buttonFilterValue) {
+                    // Show items that contain this filter value
+                    accordionItems.forEach(item => {
+                        // Get all filter values from the item (supports multiple filters)
+                        const filterElements = item.querySelectorAll('[filter="value"]');
+                        const itemFilterValues = Array.from(filterElements).map(el => el.textContent.trim());
+                        
+                        // Show item if any of its filter values match the selected filter
+                        if (itemFilterValues.includes(buttonFilterValue)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
                 }
-
-                // Update displayed items
-                updateFilteredItems();
             });
         });
 
