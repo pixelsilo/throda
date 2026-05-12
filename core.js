@@ -125,8 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (buttonFilterValue) {
                     // Show only items matching the filter
                     accordionItems.forEach(item => {
-                        const itemFilterValue = item.querySelector('[filter="value"]')?.textContent.trim();
-                        if (itemFilterValue === buttonFilterValue) {
+                        // Get all filter values from the item (supports multiple filters)
+                        const filterElements = item.querySelectorAll('[filter="value"]');
+                        const itemFilterValues = Array.from(filterElements).map(el => el.textContent.trim());
+                        
+                        // Show item if any of its filter values match the selected filter
+                        if (itemFilterValues.includes(buttonFilterValue)) {
                             item.style.display = '';
                         } else {
                             item.style.display = 'none';
