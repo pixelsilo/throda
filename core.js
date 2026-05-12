@@ -104,32 +104,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Get filter value from button - either from filter="button" or text content for "All"
+                // If button is already selected, do nothing
+                if (button.classList.contains('filter-is-selected')) {
+                    return;
+                }
+
+                // Get filter value from button
                 const filterButtonDiv = button.querySelector('[filter="button"]');
                 const buttonFilterValue = filterButtonDiv 
                     ? filterButtonDiv.textContent.trim() 
                     : (button.classList.contains('all') ? 'all' : null);
 
-                // Remove filter-is-selected from all filter buttons
+                // Clear all selections
                 filterButtons.forEach(btn => btn.classList.remove('filter-is-selected'));
 
-                // Add filter-is-selected to clicked button
+                // Select only the clicked button
                 button.classList.add('filter-is-selected');
 
                 // Filter accordion items
                 if (buttonFilterValue === 'all') {
-                    // Show all items
                     accordionItems.forEach(item => {
                         item.style.display = '';
                     });
                 } else if (buttonFilterValue) {
-                    // Show items that contain this filter value
                     accordionItems.forEach(item => {
-                        // Get all filter values from the item (supports multiple filters)
                         const filterElements = item.querySelectorAll('[filter="value"]');
                         const itemFilterValues = Array.from(filterElements).map(el => el.textContent.trim());
                         
-                        // Show item if any of its filter values match the selected filter
                         if (itemFilterValues.includes(buttonFilterValue)) {
                             item.style.display = '';
                         } else {
